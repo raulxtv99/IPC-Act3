@@ -1,3 +1,5 @@
+#DOCUMENTO RMD de la actividad 3 de R-STUDIO - ANÁLISIS DE COMPONENTES PRINCIPALES DE EXPRESIÓN GÉNICA.
+
 ---
 title: "Resolución Actividad 3 máster Bioinformática UNIR (2025)"
 author: "Lote 2-5: Luis Saul Vela del Castillo, Carme Delicado Mercader, Raul Larriba Salinas"
