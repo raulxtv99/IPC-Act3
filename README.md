@@ -1,4 +1,4 @@
-# IPC-Act3 --
+# IPC-Act3 
 Actividad 3 de la asignatura de IPC del Máster de Bioinformática de UNIR.
 
 #LA CARPETA INFORME_RMD_HTML contiene los archivos en formato rmd y html de la actividad desarrollada para la asignatura de R y Estadística. 
