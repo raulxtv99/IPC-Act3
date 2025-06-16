@@ -1,4 +1,4 @@
-#DOCUMENTO RMD de la actividad 3 de R-STUDIO - ANÁLISIS DE COMPONENTES PRINCIPALES DE EXPRESIÓN GÉNICA.
+#DOCUMENTO RMD de la actividad 3 de Estadística y R para ciencias de la salud - ANÁLISIS DE COMPONENTES PRINCIPALES DE EXPRESIÓN GÉNICA.
 
 ---
 title: "Resolución Actividad 3 máster Bioinformática UNIR (2025)"
@@ -99,7 +99,7 @@ summary(datos.genes)
 
 ```
 
-Graficamos con un boxplot la expresión de los genes para tener una idea visual de como es la expresión de los genes.
+Graficamos con un boxplot la expresión de los genes para tener una visualización general de la expresión de los genes.
 
 ```{r}
 boxplot(datos.genes, 
@@ -164,7 +164,7 @@ print(varianza.acumulada)
 
 ### Tabla PCA componentes y R\^2
 
-Hacemos una Tabla PCA con las componentes y R\^2 y R\^2 acomulada.
+Hacemos una Tabla PCA con las componentes y R\^2 y R\^2 acumulada.
 
 ```{r}
 componentes <- colnames(pca.results$x)
@@ -290,7 +290,7 @@ normalidad_df <- data.frame(
 )
 ```
 
-Añadir interpretación
+Añadimos una columna que nos ofrezca la interpretación de la normalidad según el p-value
 
 ```{r}
 normalidad_df$Interpretacion <- ifelse(
@@ -303,14 +303,14 @@ normalidad_df$Interpretacion <- ifelse(
 print(normalidad_df)
 ```
 
-Separación en 2 df según normalidad
+Separación en 2 dataframes según la normalidad
 
 ```{r}
 genes_normales <- normalidad_df %>% filter(Interpretacion == "Distribución normal")
 genes_no.normales <- normalidad_df %>% filter(Interpretacion == "No sigue distribución normal")
 ```
 
-Hacer Tabla por terciles de cada PCA, en función de si sigue o no una distribución normal elegimos un contraste de hipótesis.
+Hacemos la tabla por terciles de cada PCA, en función de si sigue o no una distribución normal y elegimos un contraste de hipótesis.
 
 ```{r}
 
@@ -413,14 +413,14 @@ for(i in 1:5){
 }
 ```
 
-Ahora vamos a unir los terciles de los PCs con los datos originales. Para poder unir el data original con el generado tenemos que retirar la observación 13, para que coincidan en filas.
+Luego unimos los terciles de los PCs con los datos originales. Para añadir el data original con el generado tenemos que retirar la observación 13, para que coincidan en filas.
 
 ```{r}
 data.clean <- data[-13,]
 data.tot <- bind_cols(data.clean, res.pca.df[,grep("tercil_PC", names(res.pca.df))])
 ```
 
-Ahora ya tenemos los datos unidos en un mismo data.frame. Vamos a generar las tablas descriptivas. La actividad nos dice que los descriptivos los mostremos en funci´´on de si las variables son parámetricas o no, por tanto tendremos que comprobar normalidad con Shapiro-Wilks, y separar los genes en dos conjuntos diferentes (los parámetricos y los no parámetricos) y a partir de ahí hacer 2 tablas diferentes para poder comparar entre ellos.
+Ahora ya tenemos los datos unidos en un mismo data.frame. Vamos a generar las tablas descriptivas. La actividad nos dice que los descriptivos los mostremos en función de si las variables son parámetricas o no, por tanto tendremos que comprobar normalidad con Shapiro-Wilks, y separar los genes en dos conjuntos diferentes (los parámetricos y los no parámetricos) y a partir de ahí hacer 2 tablas diferentes para poder comparar entre ellos.
 
 ```{r}
 #Vamos a valorar la normalidad de los genes. 
@@ -458,7 +458,7 @@ for (i in 1:5){
 }
 ```
 
-Unimos las tablas con tbl_merge y configuramos formato para que se vea un poco mejor.
+Unimos las tablas con tbl_merge y configuramos el formato para que se vea un poco mejor.
 
 ```{r}
 tabla_combinada <- tbl_merge(
@@ -474,20 +474,20 @@ tabla_combinada %>%
   flextable::align(align = "center", part = "all")
 ```
 
-Esta tabla nos muestra información acerca de la variabilidad que captura un gen concreto en un PC concreto (dando información de su distribución gracias a los terciles). Por tanto aquellos genes que tengan un p-value\>0.05 no habrán diferencias estadísticas en sus medianas entre los tres grupos de terciles, y por tanto, la variabilidad que captura ese PC no estará asociada a la expresión de ese gen.
+Esta tabla nos muestra información acerca de la variabilidad que captura un gen concreto en un PC concreto (dando información de su distribución gracias a los terciles). Por tanto aquellos genes que tengan un p-value\>0.05 no tendrán diferencias estadísticas entre las medianas de los tres grupos de terciles, y por tanto, la variabilidad que captura ese PC no estará asociada a la expresión de ese gen.
 
 Algunos ejemplos de genes que no explican la variabilidad de algunos PC son por ejemplo AQ_LIF, AQ_NOX5 para PC1 o AQ_NOS2, AQ_IL6, AQ_IL10 para PC2.
 
 ## 5. Modelo predictivo de regresión logística
 
-Para empezar comprobamos que la variable metastasis sea binaria, cogemos los terciles de los primeros 5 PCAs, y variables de ajuste como la edad, sexo, tipo de cáncer y tratamiento.
+Para empezar comprobamos que la variable metástasis sea binaria, cogemos los terciles de los primeros 5 PCAs, y variables de ajuste como la edad, sexo, tipo de cáncer y tratamiento.
 
 ```{r}
 datos_reg <- data[-13,]
 table(datos_reg$extension)
 ```
 
-Hay 46 sí y 18 no pacientes con metástasis . Creamos una variable nueva con esta infromación.
+Hay 46 pacientes con metástasis y 18 sin ella. Creamos una variable nueva con esta información.
 
 ```{r}
 
@@ -497,9 +497,9 @@ datos_reg$metastasis <- factor(datos_reg$metastasis, levels = c("no", "sí"))
 datos_reg$metastasis
 ```
 
-Creamos un data.frame de donde sacaremos todos los datos que necesitamos para nuestra regresión.
+Creamos un data.frame de dónde sacaremos todos los datos que necesitamos para nuestra regresión.
 
-Para ello cogemos los resultados de los 5 primeros PCAs, y los categorizamos en 1, 2, 3 según pertenezcan al primero, segundo o tercero tercil.
+Para ello cogemos los resultados de los 5 primeros PCAs, y los categorizamos en 1, 2, 3 según pertenezcan al primero, segundo o tercer tercil.
 
 ```{r}
 quantile(pca.df$PC1, probs = c(0, 1/3, 2/3, 1))
@@ -531,7 +531,7 @@ Hemos construido un modelo de regresión logística binaria para analizar la aso
 
 Para ello, se ha utilizado la función glm() en R, especificando la familia binomial.
 
-El programa ha usado el primer tercil de cada PCA como referéncia, comparando respecto a este si hay más probavilidad de tener metástasis.
+El programa ha usado el primer tercil de cada PCA como referencia, comparando respecto a este si hay más probabilidad de tener metástasis o no.
 
 El signo positivo en la columna Estimate significa más riesgo con respeto al primer tercil y el signo negativo una reducción del riesgo con respecto al primer tercil.
 
