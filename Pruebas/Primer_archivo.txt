@@ -3,3 +3,5 @@
 Hola, este es mi primer archivo en Github.
 **Hola, este es mi primer archivo en Github.**
 *Hola, este es mi primer archivo en Github.*
+
+Para que funcionen los símbolos que dan formato el archivo tiene que ser un MD, Markdown.
