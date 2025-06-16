@@ -29,6 +29,6 @@ También se compone por carpetas creadas por los distintos integrantes.
 - RESULTADOS_WORD contiene el archivo de resolucion de la actividad pero también las tablas resultantes de los procesos de evaluación de los Componentes Principales evaluados.
 - Pruebas contiene diferentes archivos con las pruebas de subir una foto, crear un primer archivo, o subir una carpeta del escritorio de un intengrante del grupo.
 - Samples contiene el primer archivo de github de un integrante del grupo.
-
-
-
+- Secuenciacion_Omicas contiene información relativa a la asignatura del mismo nombre. Concretamente contiene dos encuestas.
+  -- Encuesta.txt es un archivo de texto que incluye un enlace para escoger la temática de la actividad grupal
+  -- Reunión.xlsx es un excel donde podemos votar el día y la hora para reunirnos y discutir los detalles de la actividad. Como se explica en el archivo, el sistema de votación se basa en 0 y 1.
